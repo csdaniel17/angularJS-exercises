@@ -1,0 +1,107 @@
+<!--
+Write a game where the player battles the dragon.
+
+1. The dragon will initially have 20 health.
+2. The hero will initially have 10 health.
+3. Display the health of the dragon and the hero.
+4. The hero will chose to either
+  a. fight - click the "Fight" button or
+  b. flight - click the "Flight" button
+5. If hero chooses to fight, it will either deal 5 damages to the dragon or the hero - randomly (50/50 chance).
+6. If hero chooses flight, he will get 2 health back.
+7. If the dragon dies, player wins.
+8. If the hero dies, player loses.
+
+Hints at the bottom of this file.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fight or Flight</title>
+    <script src="angular.js"></script>
+    <script>
+      var app = angular.module('battle-dragon', []);
+      app.controller('MainController', function($scope) {
+        $scope.dragonHealth = 20;
+        $scope.heroHealth = 10;
+        $scope.choice = null;
+        $scope.result = null;
+
+
+        $scope.fight = function() {
+          $scope.choice = 'fight';
+          $scope.fightChoice();
+        };
+        $scope.flight = function() {
+          $scope.choice = 'flight';
+          $scope.flightChoice();
+        };
+
+        $scope.fightChoice = function() {
+          var num = Math.random();
+          if (num > 0.5) {
+            $scope.result = 'dragon';
+          } else {
+            $scope.result = 'hero';
+          }
+          if ($scope.result === 'dragon') {
+            $scope.dragonHealth -= 5;
+          } else {
+            $scope.heroHealth -= 5;
+          }
+          if ($scope.heroHealth <= 0) {
+            $scope.message = 'hero dies, player loses';
+          } else if ($scope.dragonHealth <= 0) {
+            $scope.message = 'dragon dies, player wins';
+          }
+        };
+        $scope.flightChoice = function() {
+          $scope.heroHealth += 2;
+        };
+
+        $scope.playAgain = function() {
+          $scope.dragonHealth = 20;
+          $scope.heroHealth = 10;
+          $scope.choice = null;
+          $scope.result = null;
+          $scope.message = '';
+        };
+        $scope.playAgain();
+
+      });
+    </script>
+  </head>
+  <body>
+    <div ng-app="battle-dragon" ng-controller="MainController">
+      <div ng-show="!message">
+      fight or flight?<br>
+        <button ng-click="fight()">fight</button>
+        <button ng-click="flight()">flight</button>
+        <br>
+        dragon score: {{dragonHealth}}
+        <br>
+        hero score: {{heroHealth}}
+        <br>
+      </div>
+      <div ng-show="message">
+        {{message}}
+        <br>
+        <button ng-click="playAgain()">play again</button>
+      </div>
+    </div>
+
+  </body>
+</html>
+
+
+
+
+
+
+
+<!--
+Hints
+1. Study angular-examples/4-heads-tails.html game and angular-examples/7-guess-number-2.html.
+2. Math.random() returns a random number between 0 and 1. It will return a number greater than 0.5 with a 50/50 chance.
+-->
