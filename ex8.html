@@ -17,6 +17,7 @@ The app should have
 
 5. Bonus, display the coin image next to the number
 5. Extra super bonus: write this same app using jQuery or nothing but the DOM native API. Compare and contrast.
+
 -->
 <!DOCTYPE html>
 <html>
@@ -25,10 +26,30 @@ The app should have
     <title>Making Change</title>
     <script src="angular.js"></script>
     <script>
-    <!-- write JS in here -->
+    // <!-- write JS in here -->
+      var app = angular.module('my-app', []);
+      app.controller('MainController', function($scope) {
+
+        $scope.makeChange = function() {
+          var total = ($scope.givenAmt - $scope.billAmt).toFixed(2);
+          $scope.message = 'Your change is $' + total;
+        };
+
+      });
     </script>
   </head>
   <body>
     <!-- write template code in here -->
+    <div ng-app="my-app" ng-controller="MainController">
+      <label>Bill amount: </label>
+      <input type="number" ng-model="billAmt">
+      <br>
+      <label>Given amount: </label>
+      <input type="number" ng-model="givenAmt">
+      <br>
+      <button ng-click="makeChange()">make change!</button>
+      <br>
+      {{message}}
+    </div>
   </body>
 </html>
