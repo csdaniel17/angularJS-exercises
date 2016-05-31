@@ -25,47 +25,35 @@ Hints at the bottom of this file.
       app.controller('MainController', function($scope) {
         $scope.dragonHealth = 20;
         $scope.heroHealth = 10;
-        $scope.choice = null;
-        $scope.result = null;
-
 
         $scope.fight = function() {
-          $scope.choice = 'fight';
-          $scope.fightChoice();
-        };
-        $scope.flight = function() {
-          $scope.choice = 'flight';
-          $scope.flightChoice();
-        };
-
-        $scope.fightChoice = function() {
           var num = Math.random();
           if (num > 0.5) {
-            $scope.result = 'dragon';
-          } else {
-            $scope.result = 'hero';
-          }
-          if ($scope.result === 'dragon') {
             $scope.dragonHealth -= 5;
           } else {
             $scope.heroHealth -= 5;
           }
-          if ($scope.heroHealth <= 0) {
-            $scope.message = 'hero dies, player loses';
-          } else if ($scope.dragonHealth <= 0) {
-            $scope.message = 'dragon dies, player wins';
-          }
+          checkWinner();
         };
-        $scope.flightChoice = function() {
+
+        $scope.flight = function() {
           $scope.heroHealth += 2;
+          checkWinner();
+        };
+
+        function checkWinner() {
+          if ($scope.dragonHealth <= 0) {
+            $scope.message = 'You win!';
+          } else if ($scope.heroHealth <= 0) {
+            $scope.message = 'You lose!';
+          }
         };
 
         $scope.playAgain = function() {
           $scope.dragonHealth = 20;
           $scope.heroHealth = 10;
-          $scope.choice = null;
-          $scope.result = null;
-          $scope.message = '';
+
+          $scope.message = null;
         };
         $scope.playAgain();
 
